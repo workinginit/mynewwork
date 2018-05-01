@@ -18,6 +18,10 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.vermeg.entities.RepositoryTree;
 import org.vermeg.entities.SeverityByModule;
 import org.vermeg.entities.SonarIssue;
+import org.vermeg.entities.SvnCommit;
+import org.vermeg.repository.JiraIssueRepository;
+import org.vermeg.repository.SvnCommitRepository;
+import org.vermeg.services.JiraIssueService;
 import org.vermeg.services.SonarService;
 import org.vermeg.services.SvnCommitService;
 import org.vermeg.services.SvnPackService;
@@ -43,6 +47,15 @@ public class SoLifeKpiApplication {
     
     @Autowired
     private SvnCommitService svnCommitService;
+
+    @Autowired
+    private JiraIssueService jiraIssueService;
+
+	@Autowired
+    private JiraIssueRepository jiraIssueRepository;
+	
+	@Autowired
+    private SvnCommitRepository svnCommitRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SoLifeKpiApplication.class, args);
@@ -104,6 +117,37 @@ public class SoLifeKpiApplication {
         Collection<String> Severitys = Arrays.asList("BLOCKER","CRITICAL","");
         
         
+        System.out.println("rrrr"+jiraIssueRepository.findById("MYW-1").isPresent());
+        
+        
+        List<String> listmodule = svnService.findById("1000").get().getModule();
+        for(String rt : listmodule) {
+            int nbCommit= 0;
+            int jira = 0;
+            
+        	for ( Iterator<SvnCommit> entries2 =  svnCommitRepository.findAll().iterator( ); entries2.hasNext( ); ) {
+            	SvnCommit si =  entries2.next( );
+                int test = 0;
+
+                if(jiraIssueRepository.findById((si.getMessage().equals("")? "no": si.getMessage())).isPresent()) {
+    				System.out.println(si.getMessage());
+            		for(String path: si.getPaths()) {
+            			if(path.startsWith(rt)) {
+            				nbCommit++;
+            				test = 1;
+            			}
+            		}
+            	}
+        		
+        		if(test!=0) {
+        			jira++;
+        		}
+        	}
+        	System.out.println("name : "+rt+" jira : "+jira+" commit : "+nbCommit);	
+
+        }
+
+        	
         
         
 		//System.out.println("dd"+sonarService.findByModuleAndSeverity("SoLifeSatellite-SonarService", "MINOR").size());
