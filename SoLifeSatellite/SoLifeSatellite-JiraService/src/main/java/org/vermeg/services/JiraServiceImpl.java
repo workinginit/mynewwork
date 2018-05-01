@@ -47,7 +47,7 @@ public class JiraServiceImpl implements JiraService {
  		Promise<SearchResult> sr = jrc.getSearchClient().searchJql("project = "+name+" ORDER BY KEY ASC", 100, i, null); 
 
  	 	for (Issue issue : sr.claim().getIssues()) {
- 	 	 		JiraIssue jira = new JiraIssue(issue.getId(), issue.getProject().getName(), issue.getKey(), issue.getIssueType().getName(),issue.getStatus().getName(), issue.getPriority().getName(), 
+ 	 	 		JiraIssue jira = new JiraIssue( issue.getKey(), issue.getProject().getName(), issue.getIssueType().getName(),issue.getStatus().getName(), issue.getPriority().getName(), 
  	 	 					(issue.getResolution() == null ? "NoResolution" : issue.getResolution().getDescription()), 
  	 	 					(issue.getAssignee() == null ? "NotAssigned" : issue.getAssignee().getDisplayName()), 
  	 	 					(issue.getReporter() == null ? "NoReporter" : issue.getReporter().getDisplayName()), 

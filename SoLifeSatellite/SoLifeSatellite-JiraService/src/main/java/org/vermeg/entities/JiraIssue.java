@@ -2,9 +2,8 @@ package org.vermeg.entities;
 
 public class JiraIssue {
 	
-	private Long id;
-	private String projectName;
 	private String key;
+	private String projectName;
 	private String issueType;
 	private String status;
 	private String priority;
@@ -17,13 +16,11 @@ public class JiraIssue {
 	public JiraIssue() {
 		super();
 	}
-	public JiraIssue(Long id, String projectName, String key, String issueType, String status,
-			String priority, String resolution, String assigne, String reporter, String creationDate, String updateDate
-			) {
+	public JiraIssue(String key, String projectName, String issueType, String status, String priority,
+			String resolution, String assigne, String reporter, String creationDate, String updateDate) {
 		super();
-		this.id = id;
-		this.projectName = projectName;
 		this.key = key;
+		this.projectName = projectName;
 		this.issueType = issueType;
 		this.status = status;
 		this.priority = priority;
@@ -33,12 +30,8 @@ public class JiraIssue {
 		this.creationDate = creationDate;
 		this.updateDate = updateDate;
 	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+
+
 	public String getProjectName() {
 		return projectName;
 	}
