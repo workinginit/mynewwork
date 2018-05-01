@@ -21,8 +21,6 @@ public class SvnCommit {
 		this.date = date;
 		this.paths = paths;
 	}
-
-
 	public String getAuthor() {
 		return author;
 	}
@@ -53,6 +51,4 @@ public class SvnCommit {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
-	
 }

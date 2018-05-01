@@ -9,5 +9,4 @@ public class GetJiraInfosApplication{
 	public static void main(String[] args) {
 		SpringApplication.run(GetJiraInfosApplication.class, args);
 	}
-
 }

@@ -22,7 +22,7 @@ public class SvnCommitRestService {
 	@Autowired
 	private SvnService svnservice;
 
-	//startRevision = 0 & endRevision = -1 & path =""
+	//startRevision = 1 & endRevision = -1 & path =""
 	@RequestMapping(value="/allcommit", method=RequestMethod.GET)
 	public List<SvnCommit> getListCommit(@PathParam("startRevision") long startRevision,@PathParam("endRevision") long endRevision, @PathParam("path") String path) throws SVNException{
       

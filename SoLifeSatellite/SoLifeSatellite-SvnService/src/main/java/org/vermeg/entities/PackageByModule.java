@@ -27,5 +27,4 @@ public class PackageByModule {
 	public void setListPackage(HashSet<String> listPackage) {
 		this.listPackage = listPackage;
 	}
-
 }

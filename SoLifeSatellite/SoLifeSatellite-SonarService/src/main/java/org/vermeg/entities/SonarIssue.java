@@ -16,7 +16,6 @@ public class SonarIssue {
 	public SonarIssue() {
 		super();
 	}
-	
 	public SonarIssue(String key, String projectName, String component, String type, String severity, String status,
 			 String creationDate, String updateDate, String pack, String module) {
 		super();
@@ -91,5 +90,4 @@ public class SonarIssue {
 	public void setModule(String module) {
 		this.module = module;
 	}
-	
 }

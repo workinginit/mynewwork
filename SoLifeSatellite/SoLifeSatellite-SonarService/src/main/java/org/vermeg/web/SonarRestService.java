@@ -21,8 +21,7 @@ public class SonarRestService {
 	@RequestMapping(value="/allissue", method=RequestMethod.GET)
 	public List<SonarIssue> getIssue(@PathParam("ProjectName") String ProjectName){
 		
-		return sonarIssueService.getIssue(ProjectName);
-		
+		return sonarIssueService.getIssue(ProjectName);	
 	}
 	
 }

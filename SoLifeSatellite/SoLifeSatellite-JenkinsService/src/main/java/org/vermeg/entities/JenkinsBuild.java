@@ -10,7 +10,6 @@ public class JenkinsBuild {
 	
 	public JenkinsBuild() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public JenkinsBuild(int number, String name, long duration, String result, String date) {
 		super();
@@ -50,7 +49,4 @@ public class JenkinsBuild {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	
-
-  
 }
