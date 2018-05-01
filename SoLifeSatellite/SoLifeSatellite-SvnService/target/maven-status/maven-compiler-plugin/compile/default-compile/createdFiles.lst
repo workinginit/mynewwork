@@ -1,0 +1,8 @@
+org\vermeg\entities\SvnCommit.class
+org\vermeg\services\SvnServiceImpl.class
+org\vermeg\web\SvnCommitRestService.class
+org\vermeg\services\ConnexionSvnService.class
+org\vermeg\services\SvnService.class
+org\vermeg\entities\PackageByModule.class
+org\vermeg\entities\RepositoryTree.class
+org\vermeg\GetSvnInfosApplication.class

@@ -1,0 +1,6 @@
+org\vermeg\entities\Jenkins.class
+org\vermeg\services\ConnexionJenkinsService.class
+org\vermeg\GetJenkinsInfosApplication.class
+org\vermeg\web\JenkinsRestService.class
+org\vermeg\services\JenkinsService.class
+org\vermeg\services\JenkinsServiceImpl.class

@@ -1,0 +1,6 @@
+org\vermeg\entities\JiraIssue.class
+org\vermeg\services\JiraServiceImpl.class
+org\vermeg\web\JiraRestService.class
+org\vermeg\services\JiraService.class
+org\vermeg\services\ConnexionJiraService.class
+org\vermeg\GetJiraInfosApplication.class

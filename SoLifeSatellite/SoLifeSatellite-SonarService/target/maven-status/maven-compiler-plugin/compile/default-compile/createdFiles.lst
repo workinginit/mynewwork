@@ -1,0 +1,6 @@
+org\vermeg\web\SonarRestService.class
+org\vermeg\GetSonarQubeInfosApplication.class
+org\vermeg\services\ConnexionSonarService.class
+org\vermeg\entities\SonarIssue.class
+org\vermeg\services\SonarIssueServiceImpl.class
+org\vermeg\services\SonarIssueService.class
