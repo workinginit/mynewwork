@@ -63,7 +63,7 @@ public class SvnServiceImpl implements SvnService {
 		                for ( Iterator<?> changedPaths = changedPathsSet.iterator( ); changedPaths.hasNext( ); ) {
 		                	
 		                    SVNLogEntryPath entryPath = ( SVNLogEntryPath ) logEntry.getChangedPaths( ).get( changedPaths.next( ) );	                    
-		                    paths.add(entryPath.getPath());
+		                    paths.add(entryPath.getPath().substring(1));
 		                    
 		                }
 	                    s.setPaths(paths);

@@ -19,6 +19,7 @@ import org.vermeg.entities.RepositoryTree;
 import org.vermeg.entities.SeverityByModule;
 import org.vermeg.entities.SonarIssue;
 import org.vermeg.services.SonarService;
+import org.vermeg.services.SvnCommitService;
 import org.vermeg.services.SvnPackService;
 import org.vermeg.services.SvnModuleService;
 import org.vermeg.entities.Module;
@@ -39,6 +40,9 @@ public class SoLifeKpiApplication {
     
     @Autowired
     private SvnPackService svnPackService;
+    
+    @Autowired
+    private SvnCommitService svnCommitService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SoLifeKpiApplication.class, args);
@@ -98,6 +102,8 @@ public class SoLifeKpiApplication {
           }
         
         Collection<String> Severitys = Arrays.asList("BLOCKER","CRITICAL","");
+        
+        
         
         
 		//System.out.println("dd"+sonarService.findByModuleAndSeverity("SoLifeSatellite-SonarService", "MINOR").size());
