@@ -54,7 +54,7 @@ public class SvnServiceImpl implements SvnService {
             	s.setRevision(logEntry.getRevision());
             	s.setMessage(logEntry.getMessage());
             	s.setDate(DateFormatUtils.format(logEntry.getDate(), "yyyy-MM-dd"));
-            	
+            	System.out.println("date"+logEntry.getDate());
 		            if ( logEntry.getChangedPaths( ).size( ) > 0 ) {
 		            	
 		            	ArrayList<String> paths = new ArrayList<String>();
