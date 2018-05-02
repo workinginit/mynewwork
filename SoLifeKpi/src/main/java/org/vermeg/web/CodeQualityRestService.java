@@ -20,7 +20,7 @@ import org.vermeg.services.SvnModuleService;
 
 @RestController
 @CrossOrigin("*")
-public class ModuleRestService {
+public class CodeQualityRestService {
 	
 	@Autowired
 	private CodeQualityService moduleService;

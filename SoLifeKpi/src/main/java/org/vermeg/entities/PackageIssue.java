@@ -5,21 +5,24 @@ public class PackageIssue {
 	private String nameModule;
 	private String namePackage;
 	private int number;
-	private int total;
+	private long total;
 	
 	public PackageIssue() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-	public PackageIssue(String nameModule, String namePackage, int number, int total) {
+	public PackageIssue(String nameModule, String namePackage, int number, long total) {
 		super();
 		this.nameModule = nameModule;
 		this.namePackage = namePackage;
 		this.number = number;
 		this.total = total;
 	}
-
-
+	public long getTotal() {
+		return total;
+	}
+	public void setTotal(long total) {
+		this.total = total;
+	}
 	public String getNameModule() {
 		return nameModule;
 	}
@@ -37,12 +40,6 @@ public class PackageIssue {
 	}
 	public void setNumber(int number) {
 		this.number = number;
-	}
-	public int getTotal() {
-		return total;
-	}
-	public void setTotal(int total) {
-		this.total = total;
 	}
 
 }

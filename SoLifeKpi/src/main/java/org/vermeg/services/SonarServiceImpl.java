@@ -59,4 +59,9 @@ public class SonarServiceImpl implements SonarService{
 		return sonarRepository.findByModuleAndSeverity(module, severity);
 	}
 
+	@Override
+	public long countByModule(String module) {
+		return sonarRepository.countByModule(module);
+	}
+
 }

@@ -24,6 +24,7 @@ public interface SonarService {
 	List<SonarIssue> findBySeverityIn(Collection<String>Severitys);
 	 
 	List<SonarIssue> findByModuleAndSeverity(String module,String severity);
-
+	
+	long countByModule(String module);
 
 }

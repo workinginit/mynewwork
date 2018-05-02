@@ -141,7 +141,8 @@ public class CodeQualityServiceImpl implements CodeQualityService{
 	public List<PackageIssue> issueModuleByPackage(String namemodule) {
 		
         List<String> listaa = svnPackService.findByModule(namemodule).getListPackage();
-        int totalpack = sonarService.findByModule(namemodule).size();
+        long totalpack = sonarService.countByModule(namemodule);
+
     	List<PackageIssue> listPack = new ArrayList<PackageIssue>();
 
         
