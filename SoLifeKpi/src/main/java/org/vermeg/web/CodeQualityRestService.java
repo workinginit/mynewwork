@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.vermeg.entities.JenkinsBuild;
 import org.vermeg.entities.Module;
 import org.vermeg.entities.PackageIssue;
 import org.vermeg.entities.RepositoryTree;
@@ -27,7 +28,7 @@ public class CodeQualityRestService {
 	
 	@Autowired
 	private SvnModuleService svnModuleService;
-	
+
 	
 	@RequestMapping(value="/getIssueByModule", method=RequestMethod.GET)
 	public List<Module> getModule(){
@@ -56,6 +57,11 @@ public class CodeQualityRestService {
 	@RequestMapping(value="/getRepositoryInfo", method=RequestMethod.GET)
 	public Optional<RepositoryTree> getRepositoryInfo(){
 		return svnModuleService.findById("1000");
+	}
+	
+	@RequestMapping(value="/getJenkinsLastBuild", method=RequestMethod.GET)
+	public JenkinsBuild getJenkinsLastBuild(){
+		return moduleService.JenkinsLastBuild();
 	}
 	
 }

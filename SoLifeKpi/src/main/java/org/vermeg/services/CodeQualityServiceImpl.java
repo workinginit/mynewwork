@@ -7,12 +7,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.vermeg.entities.JenkinsBuild;
 import org.vermeg.entities.Module;
 import org.vermeg.entities.PackageIssue;
 import org.vermeg.entities.SeverityByModule;
 import org.vermeg.entities.SonarIssue;
 import org.vermeg.entities.SonarSeverity;
+import org.vermeg.repository.JenkinsBuildRepository;
 
 @Service
 public class CodeQualityServiceImpl implements CodeQualityService{
@@ -25,6 +28,9 @@ public class CodeQualityServiceImpl implements CodeQualityService{
 	
     @Autowired
     private SvnPackService svnPackService;
+    
+	@Autowired
+    private JenkinsBuildRepository jenkinsBuildRepository;
 
 	@Override
 	public List<Module> issueByModule() {
@@ -154,6 +160,14 @@ public class CodeQualityServiceImpl implements CodeQualityService{
         }
 
 		return listPack;
+	}
+
+	@Override
+	public JenkinsBuild JenkinsLastBuild() {
+		Iterator<JenkinsBuild> ito = jenkinsBuildRepository.findAll(new Sort(Sort.Direction.DESC, "number")).iterator();
+		JenkinsBuild jB = ito.next();
+		
+		return jB;
 	}
 	
 	

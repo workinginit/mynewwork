@@ -14,11 +14,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.vermeg.entities.RepositoryTree;
 import org.vermeg.entities.SeverityByModule;
 import org.vermeg.entities.SonarIssue;
 import org.vermeg.entities.SvnCommit;
+import org.vermeg.repository.JenkinsBuildRepository;
 import org.vermeg.repository.JiraIssueRepository;
 import org.vermeg.repository.SvnCommitRepository;
 import org.vermeg.services.JiraIssueService;
@@ -26,6 +28,7 @@ import org.vermeg.services.SonarService;
 import org.vermeg.services.SvnCommitService;
 import org.vermeg.services.SvnPackService;
 import org.vermeg.services.SvnModuleService;
+import org.vermeg.entities.JenkinsBuild;
 import org.vermeg.entities.Module;
 import org.vermeg.entities.PackageIssue;
 
@@ -56,6 +59,9 @@ public class SoLifeKpiApplication {
 	
 	@Autowired
     private SvnCommitRepository svnCommitRepository;
+	
+	@Autowired
+    private JenkinsBuildRepository jenkinsBuildRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SoLifeKpiApplication.class, args);
@@ -146,9 +152,11 @@ public class SoLifeKpiApplication {
         	System.out.println("name : "+rt+" jira : "+jira+" commit : "+nbCommit);	
 
         }
-
-        	
         
+
+        
+        //Iterator<JenkinsBuild> ito = jenkinsBuildRepository.findAll(new Sort(Sort.Direction.DESC, "number")).iterator();
+        //System.out.println(ito.next());
         
 		//System.out.println("dd"+sonarService.findByModuleAndSeverity("SoLifeSatellite-SonarService", "MINOR").size());
 

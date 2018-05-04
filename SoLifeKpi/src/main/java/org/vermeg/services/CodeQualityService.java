@@ -2,6 +2,7 @@ package org.vermeg.services;
 
 import java.util.List;
 
+import org.vermeg.entities.JenkinsBuild;
 import org.vermeg.entities.Module;
 import org.vermeg.entities.PackageIssue;
 import org.vermeg.entities.SeverityByModule;
@@ -16,5 +17,7 @@ public interface CodeQualityService {
     List<SeverityByModule> severityByModule(String severity); 
 
     List<PackageIssue> issueModuleByPackage(String namemodule); 
+
+    JenkinsBuild JenkinsLastBuild();
 
 }
