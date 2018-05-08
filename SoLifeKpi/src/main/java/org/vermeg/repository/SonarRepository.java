@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.vermeg.entities.SonarIssue;
 
-public interface SonarRepository  extends ElasticsearchRepository<SonarIssue, String>{
+public interface SonarRepository extends ElasticsearchRepository<SonarIssue, String>{
 
 	 List<SonarIssue> findByComponentContaining(String component);
 	 
@@ -23,6 +23,5 @@ public interface SonarRepository  extends ElasticsearchRepository<SonarIssue, St
 	 List<SonarIssue> findByModuleAndSeverity(String module,String severity);
 
 	 long countByModule(String module);
-
 
 }

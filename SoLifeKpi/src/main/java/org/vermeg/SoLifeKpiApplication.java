@@ -153,6 +153,8 @@ public class SoLifeKpiApplication {
 
         }
         
+        System.out.println("++++++++++++++++++++++++++++++++");
+        System.out.println("mother " + jiraIssueRepository.findById("MYW-9").get().getIssueType());
 
         
         //Iterator<JenkinsBuild> ito = jenkinsBuildRepository.findAll(new Sort(Sort.Direction.DESC, "number")).iterator();

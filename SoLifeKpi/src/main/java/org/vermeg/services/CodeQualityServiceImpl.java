@@ -166,7 +166,6 @@ public class CodeQualityServiceImpl implements CodeQualityService{
 	public JenkinsBuild JenkinsLastBuild() {
 		Iterator<JenkinsBuild> ito = jenkinsBuildRepository.findAll(new Sort(Sort.Direction.DESC, "number")).iterator();
 		JenkinsBuild jB = ito.next();
-		
 		return jB;
 	}
 	

@@ -1,6 +1,9 @@
 package org.vermeg.web;
 
+import java.text.ParseException;
 import java.util.List;
+
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,9 +28,9 @@ public class CodeChangeRestService {
 	}
 	
 	@RequestMapping(value="/allListCommit", method=RequestMethod.GET)
-	public List<nbrCommit> allListCommit(){
+	public List<nbrCommit> allListCommit(@PathParam("starDate") String starDate, @PathParam("endDate") String endDate) throws ParseException{
       
-		return codeChangeService.allListCommit();
+		return codeChangeService.allListCommit(starDate, endDate);
 	}
 
 }
