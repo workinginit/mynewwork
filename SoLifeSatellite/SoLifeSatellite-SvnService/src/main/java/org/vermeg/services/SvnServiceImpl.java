@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -47,28 +48,12 @@ public class SvnServiceImpl implements SvnService {
 		}
 
         for ( Iterator<?> entries = logEntries.iterator( ); entries.hasNext( ); ) {
-            SVNLogEntry logEntry = ( SVNLogEntry ) entries.next( );
-    	
-            	SvnCommit s = new SvnCommit();
-            	s.setAuthor(logEntry.getAuthor());
-            	s.setRevision(logEntry.getRevision());
-            	s.setMessage(logEntry.getMessage());
-            	s.setDate(DateFormatUtils.format(logEntry.getDate(), "yyyy-MM-dd"));
-            	System.out.println("date"+logEntry.getDate());
-		            if ( logEntry.getChangedPaths( ).size( ) > 0 ) {
-		            	
-		            	ArrayList<String> paths = new ArrayList<String>();
-		                Set<?> changedPathsSet = logEntry.getChangedPaths( ).keySet( );
-		
-		                for ( Iterator<?> changedPaths = changedPathsSet.iterator( ); changedPaths.hasNext( ); ) {
-		                	
-		                    SVNLogEntryPath entryPath = ( SVNLogEntryPath ) logEntry.getChangedPaths( ).get( changedPaths.next( ) );	                    
-		                    paths.add(entryPath.getPath().substring(1));
-		                    
-		                }
-	                    s.setPaths(paths);
-		            }    
-               listofcommit.add(s);			                   
+            
+	        	SVNLogEntry logEntry = ( SVNLogEntry ) entries.next( );
+	            SvnCommit s = new SvnCommit(logEntry.getAuthor(), logEntry.getRevision(), logEntry.getMessage(), DateFormatUtils.format(logEntry.getDate(), "yyyy-MM-dd")
+	            			, logEntry.getChangedPaths( ).size( ) > 0 ? listOfPaths(logEntry.getChangedPaths( )) : null);
+		 	            
+	            listofcommit.add(s);			                   
             }
         
 		repository.closeSession();     
@@ -78,26 +63,12 @@ public class SvnServiceImpl implements SvnService {
 	@SuppressWarnings("deprecation")
 	@Override
 	public RepositoryTree listEntries(String pathDir) {
-        ArrayList<String> listTree = new ArrayList<>();
         RepositoryTree rt = new RepositoryTree();
 		SVNRepository repository = ConnexionSvnService.getInstance(url, userName, password);
 
 		try {
-			Collection<?> entries = repository.getDir(pathDir, -1, null, (Collection<?>) null);
-	        Iterator<?> iterator = entries.iterator();
-
-	        while (iterator.hasNext()) {
-	            SVNDirEntry entry = (SVNDirEntry) iterator.next();
-
-	            if( (entry.getKind() == SVNNodeKind.DIR) && !entry.getName().equals("src") && !entry.getName().equals(".settings")) {
-	            	  String t = entry.getName();
-	            	  listTree.add(t);
-	            }
-	        
-	        }
-
 	        rt.setId("1000");
-	        rt.setModule(listTree);
+	        rt.setModule(listOfModule(pathDir));
 	        rt.setLastRevision(repository.getLatestRevision());
 	        rt.setRepositoryRoot(repository.getRepositoryRoot().toString());
 
@@ -143,9 +114,32 @@ public class SvnServiceImpl implements SvnService {
 	
 	@Override
 	public List<PackageByModule> listModule(String path) {
+        ArrayList<PackageByModule> listPackByModule = new ArrayList<>();
+
+		for(String module : listOfModule(path)) {
+			listPackByModule.add(listEntries2(module + "/src/main/java", 0));
+		}
+			
+		return listPackByModule;
+	}
+
+	@Override
+	public List<String> listOfPaths(Map<String, SVNLogEntryPath> changedPathVariable) {	
+        ArrayList<String> paths = new ArrayList<String>();
+        Set<?> changedPathsSet = changedPathVariable.keySet( );
+
+        for ( Iterator<?> changedPaths = changedPathsSet.iterator( ); changedPaths.hasNext( ); ) {
+             SVNLogEntryPath entryPath = ( SVNLogEntryPath ) changedPathVariable.get( changedPaths.next( ) );	                    
+             paths.add(entryPath.getPath().substring(1));    
+        }
+      
+		return paths;
+	}
+
+	@Override
+	public List<String> listOfModule(String path) {
 		SVNRepository repository = ConnexionSvnService.getInstance(url, userName, password);
         ArrayList<String> listModule = new ArrayList<>();
-        ArrayList<PackageByModule> listPackByModule = new ArrayList<>();
 
 		try {
 			Collection<?> entries = repository.getDir(path, -1, null, (Collection<?>) null);
@@ -153,23 +147,17 @@ public class SvnServiceImpl implements SvnService {
 
 	        while (iterator.hasNext()) {
 	            SVNDirEntry entry = (SVNDirEntry) iterator.next();
-	            if(entry.getKind() == SVNNodeKind.DIR) {
-	            	if(!entry.getName().equals("src") && !entry.getName().equals(".settings") ) {
-		            	listModule.add(entry.getName());
-	            	}
+
+	            if( (entry.getKind() == SVNNodeKind.DIR) && !entry.getName().equals("src") && !entry.getName().equals(".settings")) {
+	            	  String t = entry.getName();
+	            	  listModule.add(t);
 	            }
 	        }
-
 		} catch (SVNException e) {
 			e.printStackTrace();
-		}	
+		}		
 		
-		for(String module : listModule) {
-			listPackByModule.add(listEntries2(module + "/src/main/java", 0));
-		}
-			
-	
-	return listPackByModule;
+		return listModule;
 	}
 	
 

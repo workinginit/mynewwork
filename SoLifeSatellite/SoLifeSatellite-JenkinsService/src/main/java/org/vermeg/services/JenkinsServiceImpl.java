@@ -30,9 +30,9 @@ public class JenkinsServiceImpl implements JenkinsService {
 	@Override
 	public List<JenkinsBuild> allJenkinsBuild(String ProjectName) {
 		JenkinsServer jenkins = ConnexionJenkinsService.getInstance(url, userName, password);
-
 		ArrayList<JenkinsBuild> listofbuild = new ArrayList<JenkinsBuild>();
 		Map<String, Job> jobs;
+		
 		try {
 			jobs = jenkins.getJobs();
 			
