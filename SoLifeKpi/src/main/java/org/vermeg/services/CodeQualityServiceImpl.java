@@ -154,8 +154,12 @@ public class CodeQualityServiceImpl implements CodeQualityService{
         
         for(String pbm : listaa) {
         	
-        	int size = sonarService.findByModuleAndPack(namemodule, pbm).size();
-        	PackageIssue packageIssue = new PackageIssue(namemodule, pbm, size, totalpack);
+        	int bug = sonarService.findByModuleAndPackAndType(namemodule, pbm, "BUG").size();
+        	int vulnerability = sonarService.findByModuleAndPackAndType(namemodule, pbm, "VULNERABILITY").size();
+        	int codeSmell = sonarService.findByModuleAndPackAndType(namemodule, pbm, "CODE_SMELL").size();
+        	
+        	int total = bug + vulnerability + codeSmell;
+        	PackageIssue packageIssue = new PackageIssue(namemodule, pbm, bug, vulnerability, codeSmell, total);
         	listPack.add(packageIssue);
         }
 

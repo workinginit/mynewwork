@@ -111,10 +111,9 @@ public class CodeChangeServiceImpl implements CodeChangeService{
                if(test == 1){
             	   nbCommit += numberOfCommit(rt, si.getPaths());
        			if(numberOfCommit(rt, si.getPaths())!=0) {
-       				
              	   for(JiraIssue jr: copyOfJira) {
                 	   if(si.getMessage().equals(jr.getKey())) {
-                		   System.out.println("here"+ si.getMessage());
+
                 		   if(jr.getIssueType().equals("Bug")) {
                 			   bug++;
                 		   }else if(jr.getIssueType().equals("Task")) {

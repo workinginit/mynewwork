@@ -17,7 +17,7 @@ public interface SonarService {
 	
 	List<SonarIssue> findByPack(String pack);
 
-    List<SonarIssue> findByModuleAndPack(String module,String pack);
+    List<SonarIssue> findByModuleAndPackAndType(String module,String pack, String type);
     
 	List<SonarIssue> findByModule(String module);
 	

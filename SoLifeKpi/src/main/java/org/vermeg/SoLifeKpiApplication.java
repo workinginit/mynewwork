@@ -106,7 +106,7 @@ public class SoLifeKpiApplication {
         List<PackageIssue> listPack = new ArrayList<PackageIssue>();
 
         
-        for(String pbm : listaa) {
+       /* for(String pbm : listaa) {
         	
         	int size = sonarService.findByModuleAndPack("SoLifeSatellite-SvnService",pbm).size();
         	System.out.println("size"+size + " "+pbm );
@@ -118,7 +118,7 @@ public class SoLifeKpiApplication {
             for(SonarIssue la: sonarService.findByModuleAndPack("SoLifeSatellite-SvnService",l.getNamePackage())) {
             	System.out.println("test:"+la.getPack() +la.getComponent() +"  "+la.getModule());
             }       
-          }
+          }*/
         
         Collection<String> Severitys = Arrays.asList("BLOCKER","CRITICAL","");
         

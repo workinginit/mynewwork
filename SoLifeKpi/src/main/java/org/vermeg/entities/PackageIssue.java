@@ -4,25 +4,26 @@ public class PackageIssue {
 	
 	private String nameModule;
 	private String namePackage;
-	private int number;
-	private long total;
+	private int bugP;
+	private int vulnerabilityP;
+	private int codeSmellP;
+	private int totalnumber;
 	
 	public PackageIssue() {
 		super();
 	}
-	public PackageIssue(String nameModule, String namePackage, int number, long total) {
+	public PackageIssue(String nameModule, String namePackage, int bugP, int vulnerabilityP, int codeSmellP,
+			int totalnumber) {
 		super();
 		this.nameModule = nameModule;
 		this.namePackage = namePackage;
-		this.number = number;
-		this.total = total;
+		this.bugP = bugP;
+		this.vulnerabilityP = vulnerabilityP;
+		this.codeSmellP = codeSmellP;
+		this.totalnumber = totalnumber;
 	}
-	public long getTotal() {
-		return total;
-	}
-	public void setTotal(long total) {
-		this.total = total;
-	}
+
+
 	public String getNameModule() {
 		return nameModule;
 	}
@@ -35,11 +36,28 @@ public class PackageIssue {
 	public void setNamePackage(String namePackage) {
 		this.namePackage = namePackage;
 	}
-	public int getNumber() {
-		return number;
+	public int getBugP() {
+		return bugP;
 	}
-	public void setNumber(int number) {
-		this.number = number;
+	public void setBugP(int bugP) {
+		this.bugP = bugP;
 	}
-
+	public int getVulnerabilityP() {
+		return vulnerabilityP;
+	}
+	public void setVulnerabilityP(int vulnerabilityP) {
+		this.vulnerabilityP = vulnerabilityP;
+	}
+	public int getCodeSmellP() {
+		return codeSmellP;
+	}
+	public void setCodeSmellP(int codeSmellP) {
+		this.codeSmellP = codeSmellP;
+	}
+	public int getTotalnumber() {
+		return totalnumber;
+	}
+	public void setTotalnumber(int totalnumber) {
+		this.totalnumber = totalnumber;
+	}
 }

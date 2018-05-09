@@ -40,8 +40,8 @@ public class SonarServiceImpl implements SonarService{
 	}
 
 	@Override
-	public List<SonarIssue> findByModuleAndPack(String module, String pack) {
-		return sonarRepository.findByModuleAndPack(module, pack);
+	public List<SonarIssue> findByModuleAndPackAndType(String module, String pack, String type) {
+		return sonarRepository.findByModuleAndPackAndType(module, pack, type);
 	}
 
 	@Override
