@@ -4,5 +4,4 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 public interface SvnCommitRepository extends ElasticsearchRepository<SvnCommit, String>{
 
-
 }

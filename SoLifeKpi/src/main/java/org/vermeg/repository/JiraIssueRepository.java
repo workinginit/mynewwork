@@ -6,5 +6,4 @@ import org.vermeg.entities.JiraIssue;
 
 public interface JiraIssueRepository extends ElasticsearchRepository<JiraIssue, String>{
 
-
 }
