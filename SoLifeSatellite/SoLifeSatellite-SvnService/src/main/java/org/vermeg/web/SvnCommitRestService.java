@@ -26,20 +26,19 @@ public class SvnCommitRestService {
 	@RequestMapping(value="/allcommit", method=RequestMethod.GET)
 	public List<SvnCommit> getListCommit(@PathParam("startRevision") long startRevision,@PathParam("endRevision") long endRevision, @PathParam("path") String path) throws SVNException{
       
-		return svnservice.getListCommit(path, startRevision, endRevision);
+		return svnservice.getListOfCommit(path, startRevision, endRevision);
 	}
-	
 	
 	@RequestMapping(value="/getModule", method=RequestMethod.GET)
 	public RepositoryTree getModule(@PathParam("path") String path){
       
-		return svnservice.listEntries(path);
+		return svnservice.getListOfModule(path);
 	}
 	
 	@RequestMapping(value="/getPackageByModule", method=RequestMethod.GET)
 	public List<PackageByModule> getPackage(@PathParam("path") String path){
       
-		return svnservice.listModule(path);
+		return svnservice.getListOfPackageByModule(path);
 	}
 		
 }

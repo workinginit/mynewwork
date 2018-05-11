@@ -10,13 +10,13 @@ import org.vermeg.entities.SvnCommit;
 
 public interface SvnService {
 	
-	List<SvnCommit> getListCommit(String path, long startRevision, long endRevision);
+	List<SvnCommit> getListOfCommit(String path, long startRevision, long endRevision);
 	
-	RepositoryTree listEntries(String path);
+	RepositoryTree getListOfModule(String path);
 		
-	PackageByModule listEntries2(String path, int i);
+	PackageByModule getPackageByModule(String path, int i);
 	
-	List<PackageByModule> listModule(String path);
+	List<PackageByModule> getListOfPackageByModule(String path);
 
 	List<String> listOfPaths(Map<String, SVNLogEntryPath> changedPaths);
 	

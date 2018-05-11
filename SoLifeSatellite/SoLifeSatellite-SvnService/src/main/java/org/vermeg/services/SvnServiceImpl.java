@@ -24,7 +24,7 @@ import org.vermeg.entities.SvnCommit;
 @Service
 public class SvnServiceImpl implements SvnService {
 	
-	@Value("${repository.url:https://svn.riouxsvn.com/modulerepo}")
+	@Value("${repository.url}")
     private String url;
 	
     @Value("${repository.userName}")
@@ -33,8 +33,16 @@ public class SvnServiceImpl implements SvnService {
     @Value("${repository.password}")
     private String password;
     
+	private HashSet<String> set = new HashSet<String>(); 
+    
+    /**
+     * cette méthode permet de retourner la lise de tous les revisions elle prend comme paramètre :
+     * patho : url de la branche du projet
+     * startRevision : à partir de quelle revision on commence
+     * endRevision : jusqu'a quelle revision on s'arrete
+     */
 	@Override
-	public List<SvnCommit> getListCommit(String patho, long startRevision, long endRevision) {
+	public List<SvnCommit> getListOfCommit(String patho, long startRevision, long endRevision) {
 		ArrayList<SvnCommit> listofcommit = new ArrayList<SvnCommit>();
 		String[] array = {patho};          
 
@@ -59,10 +67,15 @@ public class SvnServiceImpl implements SvnService {
 		repository.closeSession();     
 		return listofcommit;
 	}
-
+	
+	
+	/**
+	 * cette méthode permet de retourner les modules à partir d'un URL, elle prend comme paramètre :
+	 * pathDir : url de la branche du projet
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public RepositoryTree listEntries(String pathDir) {
+	public RepositoryTree getListOfModule(String pathDir) {
         RepositoryTree rt = new RepositoryTree();
 		SVNRepository repository = ConnexionSvnService.getInstance(url, userName, password);
 
@@ -79,10 +92,13 @@ public class SvnServiceImpl implements SvnService {
 		return rt;
 	}
 	
-	private HashSet<String> set = new HashSet<String>(); 
-	
+	/**
+	 * cette méthode permet de retourner la liste des packages pour un module elle prend comme paramètre:
+	 * path :  url de la branche du projet
+	 * i : a chaque recherche des packages par module i prendra comme valeur 0
+	 */
 	@Override
-	public PackageByModule listEntries2(String path, int i) {
+	public PackageByModule getPackageByModule(String path, int i) {
 		SVNRepository repository = ConnexionSvnService.getInstance(url, userName, password);	
 		
 		if(i == 0) {
@@ -100,7 +116,7 @@ public class SvnServiceImpl implements SvnService {
 			        set.add( (test1.substring(test1.indexOf("/java")+6,test1.lastIndexOf("/") )).replaceAll("/", "."));
 		        }
   
-		        listEntries2( (path.equals("")) ? entry.getName() : path + "/" + entry.getName(),1);
+		        getPackageByModule( (path.equals("")) ? entry.getName() : path + "/" + entry.getName(),1);
 	        }
 
 		} catch (SVNException e) {
@@ -112,17 +128,25 @@ public class SvnServiceImpl implements SvnService {
 		return pbm;
 	}
 	
+	
+	/**
+	 * cette méthode permet de retourner la liste des packages pour un module elle prend comme paramètre:
+	 * path :  url de la branche du projet
+	 */
 	@Override
-	public List<PackageByModule> listModule(String path) {
+	public List<PackageByModule> getListOfPackageByModule(String path) {
         ArrayList<PackageByModule> listPackByModule = new ArrayList<>();
 
 		for(String module : listOfModule(path)) {
-			listPackByModule.add(listEntries2(module + "/src/main/java", 0));
+			listPackByModule.add(getPackageByModule(module + "/src/main/java", 0));
 		}
 			
 		return listPackByModule;
 	}
 
+	/**
+	 * get paths
+	 */
 	@Override
 	public List<String> listOfPaths(Map<String, SVNLogEntryPath> changedPathVariable) {	
         ArrayList<String> paths = new ArrayList<String>();
@@ -136,6 +160,10 @@ public class SvnServiceImpl implements SvnService {
 		return paths;
 	}
 
+	/**
+	 * cette méthode est utilisé dans d'autre méthode afin de récuperer la liste des modules d'un project
+	 * path :  url de la branche du projet
+	 */
 	@Override
 	public List<String> listOfModule(String path) {
 		SVNRepository repository = ConnexionSvnService.getInstance(url, userName, password);
