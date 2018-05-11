@@ -23,11 +23,6 @@ import org.vermeg.entities.SvnCommit;
 import org.vermeg.repository.JenkinsBuildRepository;
 import org.vermeg.repository.JiraIssueRepository;
 import org.vermeg.repository.SvnCommitRepository;
-import org.vermeg.services.JiraIssueService;
-import org.vermeg.services.SonarService;
-import org.vermeg.services.SvnCommitService;
-import org.vermeg.services.SvnPackService;
-import org.vermeg.services.SvnModuleService;
 import org.vermeg.entities.JenkinsBuild;
 import org.vermeg.entities.Module;
 import org.vermeg.entities.PackageIssue;
@@ -38,21 +33,8 @@ public class SoLifeKpiApplication {
 
     @Autowired
     private ElasticsearchOperations es;
-    
-    @Autowired
-    private SvnModuleService svnService;
-    
-    @Autowired
-    private SonarService sonarService;
-    
-    @Autowired
-    private SvnPackService svnPackService;
-    
-    @Autowired
-    private SvnCommitService svnCommitService;
+        
 
-    @Autowired
-    private JiraIssueService jiraIssueService;
 
 	@Autowired
     private JiraIssueRepository jiraIssueRepository;
@@ -72,7 +54,7 @@ public class SoLifeKpiApplication {
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
 
-            printElasticSearchInfo();
+     /*       printElasticSearchInfo();
             float result = (float) 7 / 3;
        	 		System.out.println(result);
            System.out.println(sonarService.totalIssue());
@@ -84,7 +66,7 @@ public class SoLifeKpiApplication {
 		int blocker = sonarService.findBySeverity("BLOCKER").size();
 
 		int total = major + minor + info + critical + blocker;
-		
+		*/
 		
 		
 		
@@ -99,11 +81,11 @@ public class SoLifeKpiApplication {
 
 
 
-        List<String> listaa = svnPackService.findByModule("SoLifeSatellite-SvnService").getListPackage();
+       /* List<String> listaa = svnPackService.findByModule("SoLifeSatellite-SvnService").getListPackage();
        
         int totalpack = sonarService.findByModule("SoLifeSatellite-SonarService").size();
     	System.out.println("toto"+totalpack);
-        List<PackageIssue> listPack = new ArrayList<PackageIssue>();
+        List<PackageIssue> listPack = new ArrayList<PackageIssue>();*/
 
         
        /* for(String pbm : listaa) {
@@ -120,7 +102,7 @@ public class SoLifeKpiApplication {
             }       
           }*/
         
-        Collection<String> Severitys = Arrays.asList("BLOCKER","CRITICAL","");
+        /*Collection<String> Severitys = Arrays.asList("BLOCKER","CRITICAL","");
         
         
         System.out.println("rrrr"+jiraIssueRepository.findById("MYW-1").isPresent());
@@ -155,7 +137,7 @@ public class SoLifeKpiApplication {
         
         System.out.println("++++++++++++++++++++++++++++++++");
         System.out.println("mother " + jiraIssueRepository.findById("MYW-9").get().getIssueType());
-
+*/
         
         //Iterator<JenkinsBuild> ito = jenkinsBuildRepository.findAll(new Sort(Sort.Direction.DESC, "number")).iterator();
         //System.out.println(ito.next());

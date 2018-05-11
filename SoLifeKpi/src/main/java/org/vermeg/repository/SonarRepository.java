@@ -23,5 +23,5 @@ public interface SonarRepository extends ElasticsearchRepository<SonarIssue, Str
 	 List<SonarIssue> findByModuleAndSeverity(String module,String severity);
 
 	 long countByModule(String module);
-
+	 
 }

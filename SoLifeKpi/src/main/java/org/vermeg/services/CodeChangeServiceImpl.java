@@ -15,6 +15,7 @@ import org.vermeg.entities.SvnCommit;
 import org.vermeg.entities.nbrCommit;
 import org.vermeg.repository.JiraIssueRepository;
 import org.vermeg.repository.SvnCommitRepository;
+import org.vermeg.repository.SvnModuleRepository;
 
 @Service
 public class CodeChangeServiceImpl implements CodeChangeService{
@@ -26,7 +27,7 @@ public class CodeChangeServiceImpl implements CodeChangeService{
     private SvnCommitRepository svnCommitRepository;
 	
     @Autowired
-    private SvnModuleService svnService;
+    private SvnModuleRepository svnService;
 	
 	@Override
 	public List<NombreDeCommit> listcommit() {

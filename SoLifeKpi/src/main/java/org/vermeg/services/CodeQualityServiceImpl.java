@@ -16,18 +16,21 @@ import org.vermeg.entities.SeverityByModule;
 import org.vermeg.entities.SonarIssue;
 import org.vermeg.entities.SonarSeverity;
 import org.vermeg.repository.JenkinsBuildRepository;
+import org.vermeg.repository.SonarRepository;
+import org.vermeg.repository.SvnModuleRepository;
+import org.vermeg.repository.SvnPackRepository;
 
 @Service
 public class CodeQualityServiceImpl implements CodeQualityService{
 
 	@Autowired
-	private SvnModuleService svnService;
+	private SvnModuleRepository svnService;
 	    
 	@Autowired
-	private SonarService sonarService;	
+	private SonarRepository sonarService;	
 	
     @Autowired
-    private SvnPackService svnPackService;
+    private SvnPackRepository svnPackService;
     
 	@Autowired
     private JenkinsBuildRepository jenkinsBuildRepository;
@@ -37,7 +40,7 @@ public class CodeQualityServiceImpl implements CodeQualityService{
 		
 		List<String> listaa = svnService.findById("1000").get().getModule();
     	List<Module> listModule = new ArrayList<Module>();
-    	long total = sonarService.totalIssue();
+    	long total = sonarService.count();
     	
         Collection<String> Severitys = Arrays.asList("BLOCKER", "CRITICAL", "MAJOR");
     	int totalseverity = sonarService.findBySeverityIn(Severitys).size();

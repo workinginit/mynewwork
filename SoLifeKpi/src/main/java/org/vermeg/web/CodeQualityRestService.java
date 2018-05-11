@@ -16,8 +16,8 @@ import org.vermeg.entities.PackageIssue;
 import org.vermeg.entities.RepositoryTree;
 import org.vermeg.entities.SeverityByModule;
 import org.vermeg.entities.SonarSeverity;
+import org.vermeg.repository.SvnModuleRepository;
 import org.vermeg.services.CodeQualityService;
-import org.vermeg.services.SvnModuleService;
 
 @RestController
 @CrossOrigin("*")
@@ -27,7 +27,7 @@ public class CodeQualityRestService {
 	private CodeQualityService moduleService;
 	
 	@Autowired
-	private SvnModuleService svnModuleService;
+	private SvnModuleRepository svnModuleService;
 
 	
 	@RequestMapping(value="/getIssueByModule", method=RequestMethod.GET)
