@@ -16,13 +16,19 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.vermeg.entities.RepositoryTree;
 import org.vermeg.entities.SeverityByModule;
 import org.vermeg.entities.SonarIssue;
 import org.vermeg.entities.SvnCommit;
+import org.vermeg.repository.CodeEvolutionRepository;
 import org.vermeg.repository.JenkinsBuildRepository;
 import org.vermeg.repository.JiraIssueRepository;
 import org.vermeg.repository.SvnCommitRepository;
+import org.vermeg.repository.UserRepository;
+import org.vermeg.services.AccountService;
+import org.vermeg.entities.AppRole;
+import org.vermeg.entities.AppUser;
 import org.vermeg.entities.JenkinsBuild;
 import org.vermeg.entities.Module;
 import org.vermeg.entities.PackageIssue;
@@ -35,7 +41,10 @@ public class SoLifeKpiApplication {
     private ElasticsearchOperations es;
         
 
-
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private AccountService accountService;
 	@Autowired
     private JiraIssueRepository jiraIssueRepository;
 	
@@ -45,6 +54,9 @@ public class SoLifeKpiApplication {
 	@Autowired
     private JenkinsBuildRepository jenkinsBuildRepository;
 	
+	@Autowired
+    private CodeEvolutionRepository codeEvolutionRepository;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(SoLifeKpiApplication.class, args);
 	}
@@ -53,6 +65,8 @@ public class SoLifeKpiApplication {
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
+        	
+        	
 
      /*       printElasticSearchInfo();
             float result = (float) 7 / 3;
@@ -68,8 +82,20 @@ public class SoLifeKpiApplication {
 		int total = major + minor + info + critical + blocker;
 		*/
 		
+        	System.out.println("dde"+codeEvolutionRepository.findByNamedModule("SoLifeSatellite-JiraService").size());
 		
-		
+    		accountService.saveUser(new AppUser(null, "admin", "123", null));
+    		accountService.saveUser(new AppUser(null, "user", "123", null));
+
+    		accountService.saveRole(new AppRole(null, "ADMIN"));
+    		accountService.saveRole(new AppRole(null, "USER"));
+    		
+    		accountService.AddRoleToUse("admin", "ADMIN");
+    		accountService.AddRoleToUse("user", "USER");
+
+
+    		
+    		System.out.println("mm"+accountService.findUserByUsername("admin").getUsername());
 		
 		
 		/*List<String> listaa = svnService.findById("1000").get().getModule();
@@ -275,4 +301,9 @@ public class SoLifeKpiApplication {
         });
         System.out.println("<--ElasticSearchendddddddddddd--");
     }
+    
+	@Bean
+	public BCryptPasswordEncoder getBCPE() {
+		return new BCryptPasswordEncoder();
+	}
 }
