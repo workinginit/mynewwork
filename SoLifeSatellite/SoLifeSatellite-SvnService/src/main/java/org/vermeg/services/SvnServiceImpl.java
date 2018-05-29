@@ -40,13 +40,14 @@ public class SvnServiceImpl implements SvnService {
      * patho : url de la branche du projet
      * startRevision : à partir de quelle revision on commence
      * endRevision : jusqu'a quelle revision on s'arrete
+     * Checked
      */
 	@Override
 	public List<SvnCommit> getListOfCommit(String patho, long startRevision, long endRevision) {
 		ArrayList<SvnCommit> listofcommit = new ArrayList<SvnCommit>();
 		String[] array = {patho};          
 
-		SVNRepository repository = ConnexionSvnService.getInstance(url, userName, password);
+		SVNRepository repository = ConnexionSvnService.getInstance(url, userName, decrypt(password));
         Collection<?> logEntries = null;
 
         try {
@@ -72,12 +73,13 @@ public class SvnServiceImpl implements SvnService {
 	/**
 	 * cette méthode permet de retourner les modules à partir d'un URL, elle prend comme paramètre :
 	 * pathDir : url de la branche du projet
+	 * Checked 
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public RepositoryTree getListOfModule(String pathDir) {
         RepositoryTree rt = new RepositoryTree();
-		SVNRepository repository = ConnexionSvnService.getInstance(url, userName, password);
+		SVNRepository repository = ConnexionSvnService.getInstance(url, userName, decrypt(password));
 
 		try {
 	        rt.setId("1000");
@@ -96,10 +98,11 @@ public class SvnServiceImpl implements SvnService {
 	 * cette méthode permet de retourner la liste des packages pour un module elle prend comme paramètre:
 	 * path :  url de la branche du projet
 	 * i : a chaque recherche des packages par module i prendra comme valeur 0
+	 * Checked
 	 */
 	@Override
 	public PackageByModule getPackageByModule(String path, int i) {
-		SVNRepository repository = ConnexionSvnService.getInstance(url, userName, password);	
+		SVNRepository repository = ConnexionSvnService.getInstance(url, userName, decrypt(password));	
 		
 		if(i == 0) {
 			set = new HashSet<String>(); 
@@ -110,11 +113,15 @@ public class SvnServiceImpl implements SvnService {
 	        Iterator<?> iterator = entries.iterator();
 
 	        while (iterator.hasNext()) {	
-	            SVNDirEntry entry = (SVNDirEntry) iterator.next();          	
-		        if (entry.getKind() == SVNNodeKind.FILE ) {
+	            SVNDirEntry entry = (SVNDirEntry) iterator.next();    
+	            
+		       if (entry.getKind() == SVNNodeKind.FILE ) {
 		        	String test1 =  (path.equals("") ? "" : path + "/") + entry.getName();
-			        set.add( (test1.substring(test1.indexOf("/java")+6,test1.lastIndexOf("/") )).replaceAll("/", "."));
+			        if(test1.contains("/src/main/java/")) {
+				        set.add( (test1.substring(test1.indexOf("/java")+6,test1.lastIndexOf("/") )).replaceAll("/", "."));
+			        }		        
 		        }
+		        
   
 		        getPackageByModule( (path.equals("")) ? entry.getName() : path + "/" + entry.getName(),1);
 	        }
@@ -123,22 +130,24 @@ public class SvnServiceImpl implements SvnService {
 			e.printStackTrace();
 		}	
 		
-		PackageByModule pbm = new PackageByModule(path.substring(0, path.indexOf("/src/main/java")),set);
+		PackageByModule pbm = new PackageByModule(path,set);
 
 		return pbm;
 	}
 	
 	
 	/**
+	 * Etape 1
 	 * cette méthode permet de retourner la liste des packages pour un module elle prend comme paramètre:
 	 * path :  url de la branche du projet
+	 * Checked
 	 */
 	@Override
 	public List<PackageByModule> getListOfPackageByModule(String path) {
         ArrayList<PackageByModule> listPackByModule = new ArrayList<>();
 
 		for(String module : listOfModule(path)) {
-			listPackByModule.add(getPackageByModule(module + "/src/main/java", 0));
+			listPackByModule.add(getPackageByModule(module, 0));
 		}
 			
 		return listPackByModule;
@@ -146,6 +155,7 @@ public class SvnServiceImpl implements SvnService {
 
 	/**
 	 * get paths
+	 * Checked
 	 */
 	@Override
 	public List<String> listOfPaths(Map<String, SVNLogEntryPath> changedPathVariable) {	
@@ -163,10 +173,11 @@ public class SvnServiceImpl implements SvnService {
 	/**
 	 * cette méthode est utilisé dans d'autre méthode afin de récuperer la liste des modules d'un project
 	 * path :  url de la branche du projet
+	 * Checked
 	 */
 	@Override
 	public List<String> listOfModule(String path) {
-		SVNRepository repository = ConnexionSvnService.getInstance(url, userName, password);
+		SVNRepository repository = ConnexionSvnService.getInstance(url, userName, decrypt(password));
         ArrayList<String> listModule = new ArrayList<>();
 
 		try {
@@ -188,5 +199,13 @@ public class SvnServiceImpl implements SvnService {
 		return listModule;
 	}
 	
+	 public String decrypt(String password){
+	        String aCrypter= "";
+	        for (int i=0; i<password.length();i++)  {
+	            int c=password.charAt(i)^48;  
+	            aCrypter=aCrypter+(char)c; 
+	        }
+	        return aCrypter;
+	    }
 
 }

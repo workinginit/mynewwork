@@ -29,7 +29,7 @@ public class JenkinsServiceImpl implements JenkinsService {
 
 	@Override
 	public List<JenkinsBuild> allJenkinsBuild(String ProjectName) {
-		JenkinsServer jenkins = ConnexionJenkinsService.getInstance(url, userName, password);
+		JenkinsServer jenkins = ConnexionJenkinsService.getInstance(url, userName, decrypt(password));
 		ArrayList<JenkinsBuild> listofbuild = new ArrayList<JenkinsBuild>();
 		Map<String, Job> jobs;
 		
@@ -49,6 +49,15 @@ public class JenkinsServiceImpl implements JenkinsService {
 		}
 
 		return listofbuild;
+	}
+	
+	public String decrypt(String password) {
+		String aCrypter="";
+        for (int i=0; i<password.length();i++)  {
+            int c=password.charAt(i)^48;  
+            aCrypter=aCrypter+(char)c; 
+        }
+        return aCrypter;
 	}
 
 }

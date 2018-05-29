@@ -27,7 +27,7 @@ public class SonarIssueServiceImpl implements SonarIssueService{
 	
 	@Override
 	public List<SonarIssue> getIssue(String projectName) {
-		WsClient wsClient= ConnexionSonarService.getInstance(url, userName, password, token);
+		WsClient wsClient= ConnexionSonarService.getInstance(url, userName, decrypt(password), token);
 		
         SearchWsRequest searchWsRequest = new SearchWsRequest();
         ArrayList<String> projectKeys = new ArrayList<>();
@@ -41,13 +41,29 @@ public class SonarIssueServiceImpl implements SonarIssueService{
     	ArrayList<SonarIssue> listofissue = new ArrayList<SonarIssue>();
 
         for (Issues.Issue issue : issuesList) {
-        	SonarIssue s = new SonarIssue(issue.getKey(),issue.getProject(), issue.getComponent().substring(issue.getComponent().indexOf(":")+1) ,issue.getType().toString(), issue.getSeverity().toString(), issue.getStatus(),
-        			issue.getCreationDate().substring(0, 10), issue.getUpdateDate().substring(0, 10), (issue.getComponent().substring(issue.getComponent().indexOf("/java")+6, issue.getComponent().lastIndexOf("/"))).replaceAll("/", "."),
-        			issue.getComponent().substring(issue.getComponent().indexOf(":", 0)+1, issue.getComponent().indexOf("/", 0)) );
-        	listofissue.add(s);
+        	if(issue.getComponent().contains("/src/main/java/")) {
+        		String[] module = issue.getComponent().substring(issue.getComponent().indexOf(":")+1).split("/");
+            	SonarIssue s = new SonarIssue(issue.getKey(),issue.getProject(), issue.getComponent().substring(issue.getComponent().indexOf(":")+1) ,issue.getType().toString(), issue.getSeverity().toString(), issue.getStatus(),
+            			issue.getCreationDate().substring(0, 10), issue.getUpdateDate().substring(0, 10), 
+            			(issue.getComponent().substring(issue.getComponent().indexOf("/java")+6, issue.getComponent().lastIndexOf("/"))).replaceAll("/", "."),
+            			module[0] );
+            	listofissue.add(s);	
+        	}
         }	
-
+        
+  
 		return listofissue;
+	}
+
+
+	@Override
+	public String decrypt(String password) {
+		String aCrypter="";
+        for (int i=0; i<password.length();i++)  {
+            int c=password.charAt(i)^48;  
+            aCrypter=aCrypter+(char)c; 
+        }
+        return aCrypter;
 	}
 
 }

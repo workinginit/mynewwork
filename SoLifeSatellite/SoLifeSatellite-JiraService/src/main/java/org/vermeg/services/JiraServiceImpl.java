@@ -36,7 +36,7 @@ public class JiraServiceImpl implements JiraService {
 		j = 0;
 		name = project;
 		
-		JiraRestClient jrc = ConnexionJiraService.getInstance(url, userName, password);
+		JiraRestClient jrc = ConnexionJiraService.getInstance(url, userName, decrypt(password));
 		getallIssues(jrc, 0);
 
 		return listOfIssues;
@@ -64,7 +64,14 @@ public class JiraServiceImpl implements JiraService {
 		return listOfIssues;	
 	}
 
-
+	public String decrypt(String password) {
+		String aCrypter="";
+        for (int i=0; i<password.length();i++)  {
+            int c=password.charAt(i)^48;  
+            aCrypter=aCrypter+(char)c; 
+        }
+        return aCrypter;
+	}
 
 
 }
