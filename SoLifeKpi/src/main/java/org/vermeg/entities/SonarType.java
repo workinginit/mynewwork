@@ -1,5 +1,5 @@
 package org.vermeg.entities;
 
-public enum TypeSonar {
+public enum SonarType {
 	VULNERABILITY, BUG, CODE_SMELL
 }

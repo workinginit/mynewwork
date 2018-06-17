@@ -5,6 +5,7 @@ public class NombreDeCommit {
 	private String namedModule;
 	private int jiraIssue;
 	private int svnCommit;
+	private long sonarissue;
 	
 	public NombreDeCommit() {
 		super();
@@ -14,6 +15,20 @@ public class NombreDeCommit {
 		this.namedModule = namedModule;
 		this.jiraIssue = jiraIssue;
 		this.svnCommit = svnCommit;
+	}
+	
+	public NombreDeCommit(String namedModule, int jiraIssue, int svnCommit, long sonarissue) {
+		super();
+		this.namedModule = namedModule;
+		this.jiraIssue = jiraIssue;
+		this.svnCommit = svnCommit;
+		this.sonarissue = sonarissue;
+	}
+	public long getSonarissue() {
+		return sonarissue;
+	}
+	public void setSonarissue(long sonarissue) {
+		this.sonarissue = sonarissue;
 	}
 	public String getNamedModule() {
 		return namedModule;

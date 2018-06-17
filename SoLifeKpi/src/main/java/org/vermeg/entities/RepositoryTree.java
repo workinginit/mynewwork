@@ -22,6 +22,7 @@ public class RepositoryTree {
 		this.lastRevision = lastRevision;
 		this.module = module;
 	}
+	
 	public String getId() {
 		return id;
 	}
@@ -46,5 +47,4 @@ public class RepositoryTree {
 	public void setLastRevision(long lastRevision) {
 		this.lastRevision = lastRevision;
 	}
-	
 }

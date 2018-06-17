@@ -95,5 +95,4 @@ public class SonarIssue {
 	public void setModule(String module) {
 		this.module = module;
 	}
-	
 }

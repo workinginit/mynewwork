@@ -11,11 +11,13 @@ import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.vermeg.entities.JiraIssue;
+import org.vermeg.entities.JiraPriority;
+import org.vermeg.entities.JiraProjectPriority;
 import org.vermeg.entities.NombreDeCommit;
 import org.vermeg.entities.SvnCommit;
-import org.vermeg.entities.nbrCommit;
-import org.vermeg.entities.test;
+import org.vermeg.entities.CommitByModule;
 import org.vermeg.repository.JiraIssueRepository;
+import org.vermeg.repository.SonarRepository;
 import org.vermeg.repository.SvnCommitRepository;
 import org.vermeg.repository.SvnModuleRepository;
 
@@ -30,6 +32,9 @@ public class CodeChangeServiceImpl implements CodeChangeService{
 	
     @Autowired
     private SvnModuleRepository svnService;
+	
+	@Autowired
+	private SonarRepository sonarService;
 	
     /**
      * cette méthode retourne une list du NombreDeCommit par module
@@ -63,7 +68,10 @@ public class CodeChangeServiceImpl implements CodeChangeService{
             	}
          	}
      	}
-		return new NombreDeCommit(module, jira, nbCommit);
+     	
+     	System.out.println("dddrre"+ sonarService.countByModule("module"));
+     	
+		return new NombreDeCommit(module, jira, nbCommit, sonarService.countByModule(module));
 	}
 	
 	/**
@@ -86,13 +94,13 @@ public class CodeChangeServiceImpl implements CodeChangeService{
 	 * 
 	 */
 	@Override
-	public List<nbrCommit> allListCommit(String startDate, String endDate) throws ParseException {
+	public List<CommitByModule> allListCommit(String startDate, String endDate) throws ParseException {
 	   	SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
     	Date startDate1 = null ;
 	    Date endDate1 = null ;
 
 		List<String> listmodule = svnService.findById("1000").get().getModule();
-    	List<nbrCommit> listOfCommit = new ArrayList<nbrCommit>();
+    	List<CommitByModule> listOfCommit = new ArrayList<CommitByModule>();
     	List<SvnCommit> listOfSvnCommit = IteratorUtils.toList(svnCommitRepository.findAll().iterator( ));
     	List<JiraIssue> listOfJiraIssue = IteratorUtils.toList(jiraIssueRepository.findAll().iterator());
 	    
@@ -115,7 +123,7 @@ public class CodeChangeServiceImpl implements CodeChangeService{
 	 * 
 	 */
 	@Override
-	public nbrCommit nbrCommitByModule(String module, List<SvnCommit> listOfSvnCommit,
+	public CommitByModule nbrCommitByModule(String module, List<SvnCommit> listOfSvnCommit,
 			List<JiraIssue> listOfJiraIssue) {
 
 		long nbCommit= 0;
@@ -130,7 +138,7 @@ public class CodeChangeServiceImpl implements CodeChangeService{
    			
         	if(numberOfCommit(module, si.getPaths())!=0) {
          	   for(JiraIssue jr: listOfJiraIssue) {
-            	   if(si.getMessage().equals(jr.getKey())) {
+            	   if(si.getMessage().contentEquals(jr.getKey())) {
 
             		   if(jr.getIssueType().equals("Bug")) {
             			   bug++;
@@ -147,14 +155,14 @@ public class CodeChangeServiceImpl implements CodeChangeService{
 			}
     	}
 
-		return new nbrCommit(module, nbCommit, bug, task, story, epic, new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()) );
+		return new CommitByModule(module, nbCommit, bug, task, story, epic, new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()) );
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public nbrCommit nbrCommitByModule(String module, List<SvnCommit> listOfSvnCommit, List<JiraIssue> listOfJiraIssue,
+	public CommitByModule nbrCommitByModule(String module, List<SvnCommit> listOfSvnCommit, List<JiraIssue> listOfJiraIssue,
 			Date startDate, Date endDate) throws ParseException {
 	   	SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
 
@@ -172,7 +180,7 @@ public class CodeChangeServiceImpl implements CodeChangeService{
             	if(numberOfCommit(module, si.getPaths())!=0) {
             		
              	   for(JiraIssue jr: listOfJiraIssue) {
-                	   if(si.getMessage().equals(jr.getKey())) {
+                	   if(si.getMessage().contentEquals(jr.getKey())) {
 
                 		   if(jr.getIssueType().equals("Bug")) {
                 			   bug++;
@@ -193,12 +201,22 @@ public class CodeChangeServiceImpl implements CodeChangeService{
     	}
 		
 		
-		return new nbrCommit(module, nbCommit, bug, task, story, epic);
+		return new CommitByModule(module, nbCommit, bug, task, story, epic);
 	}
 
+	/**
+	 *
+	 */
 	@Override
-	public List<test> listoftest() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<JiraProjectPriority> listOfJiraProjectPriority(String jiraType) {
+
+    	List<JiraProjectPriority> listOfJiraProjectPriority = new ArrayList<JiraProjectPriority>();
+
+        for (JiraPriority pr : JiraPriority.values()) {
+        	JiraProjectPriority j = new JiraProjectPriority(pr, jiraIssueRepository.countByIssueTypeAndPriority(jiraType, pr.name()));
+        	listOfJiraProjectPriority.add(j);
+        }
+		
+		return listOfJiraProjectPriority;
 	}
 }

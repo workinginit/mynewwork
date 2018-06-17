@@ -1,38 +1,26 @@
 package org.vermeg.entities;
 
+import java.util.List;
+
 public class Module {
 	
 	private String nameModule;
-	private int bug;
-	private int vulnerability;
-	private int codeSmell;
-	private float percentage;
-	private int blocker;
-	private int critical;
-	private int major;
-	private float totalIssueBySeverity;
+	private float totalIssueByType;
+	private float totalIssuebySeverity;
+	private List<SonarTypeModule> listSonarType;
+	private List<SonarSeverityModule> listSonarSeverity;
 	
 	public Module() {
 		super();
 	}
-	public Module(String nameModule, int bug, int vulnerability, int codeSmell, float percentage, int blocker,
-			int critical, int major, float totalIssueBySeverity) {
+	public Module(String nameModule, float totalIssueByType, float totalIssuebySeverity,
+			List<SonarTypeModule> listSonarType, List<SonarSeverityModule> listSonarSeverity) {
 		super();
 		this.nameModule = nameModule;
-		this.bug = bug;
-		this.vulnerability = vulnerability;
-		this.codeSmell = codeSmell;
-		this.percentage = percentage;
-		this.blocker = blocker;
-		this.critical = critical;
-		this.major = major;
-		this.totalIssueBySeverity = totalIssueBySeverity;
-	}
-	public float getPercentage() {
-		return percentage;
-	}
-	public void setPercentage(float percentage) {
-		this.percentage = percentage;
+		this.totalIssueByType = totalIssueByType;
+		this.totalIssuebySeverity = totalIssuebySeverity;
+		this.listSonarType = listSonarType;
+		this.listSonarSeverity = listSonarSeverity;
 	}
 	public String getNameModule() {
 		return nameModule;
@@ -40,47 +28,69 @@ public class Module {
 	public void setNameModule(String nameModule) {
 		this.nameModule = nameModule;
 	}
-	public int getBug() {
-		return bug;
+	public float getTotalIssueByType() {
+		return totalIssueByType;
 	}
-	public void setBug(int bug) {
-		this.bug = bug;
+	public void setTotalIssueByType(float totalIssueByType) {
+		this.totalIssueByType = totalIssueByType;
 	}
-	public int getVulnerability() {
-		return vulnerability;
+	public float getTotalIssuebySeverity() {
+		return totalIssuebySeverity;
 	}
-	public void setVulnerability(int vulnerability) {
-		this.vulnerability = vulnerability;
+	public void setTotalIssuebySeverity(float totalIssuebySeverity) {
+		this.totalIssuebySeverity = totalIssuebySeverity;
 	}
-	public int getCodeSmell() {
-		return codeSmell;
+	public List<SonarTypeModule> getListSonarType() {
+		return listSonarType;
 	}
-	public void setCodeSmell(int codeSmell) {
-		this.codeSmell = codeSmell;
+	public void setListSonarType(List<SonarTypeModule> listSonarType) {
+		this.listSonarType = listSonarType;
 	}
-	public int getBlocker() {
-		return blocker;
+	public List<SonarSeverityModule> getListSonarSeverity() {
+		return listSonarSeverity;
 	}
-	public void setBlocker(int blocker) {
-		this.blocker = blocker;
+	public void setListSonarSeverity(List<SonarSeverityModule> listSonarSeverity) {
+		this.listSonarSeverity = listSonarSeverity;
 	}
-	public int getCritical() {
-		return critical;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((listSonarSeverity == null) ? 0 : listSonarSeverity.hashCode());
+		result = prime * result + ((listSonarType == null) ? 0 : listSonarType.hashCode());
+		result = prime * result + ((nameModule == null) ? 0 : nameModule.hashCode());
+		result = prime * result + Float.floatToIntBits(totalIssueByType);
+		result = prime * result + Float.floatToIntBits(totalIssuebySeverity);
+		return result;
 	}
-	public void setCritical(int critical) {
-		this.critical = critical;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Module other = (Module) obj;
+		if (listSonarSeverity == null) {
+			if (other.listSonarSeverity != null)
+				return false;
+		} else if (!listSonarSeverity.equals(other.listSonarSeverity))
+			return false;
+		if (listSonarType == null) {
+			if (other.listSonarType != null)
+				return false;
+		} else if (!listSonarType.equals(other.listSonarType))
+			return false;
+		if (nameModule == null) {
+			if (other.nameModule != null)
+				return false;
+		} else if (!nameModule.equals(other.nameModule))
+			return false;
+		if (Float.floatToIntBits(totalIssueByType) != Float.floatToIntBits(other.totalIssueByType))
+			return false;
+		if (Float.floatToIntBits(totalIssuebySeverity) != Float.floatToIntBits(other.totalIssuebySeverity))
+			return false;
+		return true;
 	}
-	public int getMajor() {
-		return major;
-	}
-	public void setMajor(int major) {
-		this.major = major;
-	}
-	public float getTotalIssueBySeverity() {
-		return totalIssueBySeverity;
-	}
-	public void setTotalIssueBySeverity(int totalIssueBySeverity) {
-		this.totalIssueBySeverity = totalIssueBySeverity;
-	}
-	
 }

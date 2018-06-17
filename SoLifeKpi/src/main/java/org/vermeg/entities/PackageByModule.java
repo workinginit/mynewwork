@@ -32,5 +32,4 @@ public class PackageByModule {
 	public void setListPackage(List<String> listPackage) {
 		this.listPackage = listPackage;
 	}
-
 }

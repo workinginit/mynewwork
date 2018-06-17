@@ -12,7 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.ldap.userdetails.LdapUserDetailsImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.vermeg.entities.AppUser;
 
@@ -52,13 +52,14 @@ public class JWTAuthentificationFilter extends UsernamePasswordAuthenticationFil
 			HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 
-		User springUser = (User) authResult.getPrincipal();
+		LdapUserDetailsImpl springUser = (LdapUserDetailsImpl) authResult.getPrincipal();
+		System.out.println("dd"+springUser.getDn()+springUser.getClass().getName());
 		//creation d'un nouveau objet JWT
 		String jwt = Jwts.builder()
 				.setSubject(springUser.getUsername())
 				.setExpiration(new Date(System.currentTimeMillis()+SecurityConstants.EXPIRATION_TIME))
 				.signWith(SignatureAlgorithm.HS256, SecurityConstants.SECRET)
-				.claim("roles", springUser.getAuthorities())
+				.claim("roles", null)
 				.compact();
 		
 		response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX+jwt);

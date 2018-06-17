@@ -1,6 +1,6 @@
 package org.vermeg.entities;
 
-public class nbrCommit {
+public class CommitByModule {
 
 	private String namedModule;
 	private long svnCommit;
@@ -10,10 +10,10 @@ public class nbrCommit {
 	private int epic;
 	private String dateWeek;
 	
-	public nbrCommit() {
+	public CommitByModule() {
 		super();
 	}
-	public nbrCommit(String namedModule, long svnCommit, int bug, int task, int story, int epic) {
+	public CommitByModule(String namedModule, long svnCommit, int bug, int task, int story, int epic) {
 		super();
 		this.namedModule = namedModule;
 		this.svnCommit = svnCommit;
@@ -23,7 +23,7 @@ public class nbrCommit {
 		this.epic = epic;
 	}
 	
-	public nbrCommit(String namedModule, long svnCommit, int bug, int task, int story, int epic, String dateWeek) {
+	public CommitByModule(String namedModule, long svnCommit, int bug, int task, int story, int epic, String dateWeek) {
 		super();
 		this.namedModule = namedModule;
 		this.svnCommit = svnCommit;
@@ -75,6 +75,4 @@ public class nbrCommit {
 	public void setDateWeek(String dateWeek) {
 		this.dateWeek = dateWeek;
 	}
-
-
 }

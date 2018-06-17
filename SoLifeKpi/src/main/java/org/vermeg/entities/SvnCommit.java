@@ -56,5 +56,4 @@ public class SvnCommit {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
 }

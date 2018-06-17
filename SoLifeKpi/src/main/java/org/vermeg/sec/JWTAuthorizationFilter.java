@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -36,6 +35,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter{
 				"Access-Control-Allow-Origin,"
 				+ "Access-Control-Allow-Credentials,"
 				+ "Authorization");
+	    response.addHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS");
 		
 		//get authorization (JWT)
 		String jwt = request.getHeader(SecurityConstants.HEADER_STRING);
@@ -62,12 +62,10 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter{
 			ArrayList<Map<String,String>> roles = (ArrayList<Map<String,String>>) claims.get("roles");
 			Collection<GrantedAuthority> authorities = new ArrayList<>();
 			
-			roles.forEach(r->{
-				authorities.add(new SimpleGrantedAuthority(r.get("authority")));
-			});
+		
 			
 			//l'authentification est deja faite vu qu'on a le jwt
-			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, null);
 			SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 			//je passe au filter suivant
 			filterchain.doFilter(request, response);

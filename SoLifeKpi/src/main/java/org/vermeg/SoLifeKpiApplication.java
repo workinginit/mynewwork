@@ -1,10 +1,5 @@
 package org.vermeg;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.elasticsearch.client.Client;
@@ -14,24 +9,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.vermeg.entities.RepositoryTree;
-import org.vermeg.entities.SeverityByModule;
-import org.vermeg.entities.SonarIssue;
-import org.vermeg.entities.SvnCommit;
-import org.vermeg.repository.CodeEvolutionRepository;
-import org.vermeg.repository.JenkinsBuildRepository;
-import org.vermeg.repository.JiraIssueRepository;
-import org.vermeg.repository.SvnCommitRepository;
-import org.vermeg.repository.UserRepository;
-import org.vermeg.services.AccountService;
-import org.vermeg.entities.AppRole;
-import org.vermeg.entities.AppUser;
-import org.vermeg.entities.JenkinsBuild;
-import org.vermeg.entities.Module;
-import org.vermeg.entities.PackageIssue;
+import org.vermeg.entities.CodeEvo;
+import org.vermeg.repository.CodeEvoRepository;
 
 
 @SpringBootApplication
@@ -39,23 +19,9 @@ public class SoLifeKpiApplication {
 
     @Autowired
     private ElasticsearchOperations es;
-        
-
+    
 	@Autowired
-	private UserRepository userRepository;
-	@Autowired
-	private AccountService accountService;
-	@Autowired
-    private JiraIssueRepository jiraIssueRepository;
-	
-	@Autowired
-    private SvnCommitRepository svnCommitRepository;
-	
-	@Autowired
-    private JenkinsBuildRepository jenkinsBuildRepository;
-	
-	@Autowired
-    private CodeEvolutionRepository codeEvolutionRepository;
+    private CodeEvoRepository codeEvoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SoLifeKpiApplication.class, args);
@@ -65,6 +31,8 @@ public class SoLifeKpiApplication {
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
+        	
+        
         	
         	
 
@@ -82,20 +50,8 @@ public class SoLifeKpiApplication {
 		int total = major + minor + info + critical + blocker;
 		*/
 		
-        	System.out.println("dde"+codeEvolutionRepository.findByNamedModule("SoLifeSatellite-JiraService").size());
-		
-    		accountService.saveUser(new AppUser(null, "admin", "123", null));
-    		accountService.saveUser(new AppUser(null, "user", "123", null));
-
-    		accountService.saveRole(new AppRole(null, "ADMIN"));
-    		accountService.saveRole(new AppRole(null, "USER"));
-    		
-    		accountService.AddRoleToUse("admin", "ADMIN");
-    		accountService.AddRoleToUse("user", "USER");
 
 
-    		
-    		System.out.println("mm"+accountService.findUserByUsername("admin").getUsername());
 		
 		
 		/*List<String> listaa = svnService.findById("1000").get().getModule();
@@ -290,7 +246,8 @@ public class SoLifeKpiApplication {
     }
 	
 	
-    private void printElasticSearchInfo() {
+    @SuppressWarnings("unused")
+	private void printElasticSearchInfo() {
 
         System.out.println("--ElasticSearchiciiiiiiiiiiiiii-->");
         Client client = es.getClient();
@@ -301,9 +258,4 @@ public class SoLifeKpiApplication {
         });
         System.out.println("<--ElasticSearchendddddddddddd--");
     }
-    
-	@Bean
-	public BCryptPasswordEncoder getBCPE() {
-		return new BCryptPasswordEncoder();
-	}
 }

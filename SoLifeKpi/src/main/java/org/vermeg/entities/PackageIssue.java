@@ -1,34 +1,21 @@
 package org.vermeg.entities;
 
+import java.util.List;
+
 public class PackageIssue {
 	
-	private String nameModule;
 	private String namePackage;
-	private int bugP;
-	private int vulnerabilityP;
-	private int codeSmellP;
-	private int totalnumber;
-	
+	private float totalnumber;
+	private List<SonarTypeModule> listSonarType;
+
 	public PackageIssue() {
 		super();
 	}
-	public PackageIssue(String nameModule, String namePackage, int bugP, int vulnerabilityP, int codeSmellP,
-			int totalnumber) {
+	public PackageIssue(String namePackage, float totalnumber, List<SonarTypeModule> listSonarType) {
 		super();
-		this.nameModule = nameModule;
 		this.namePackage = namePackage;
-		this.bugP = bugP;
-		this.vulnerabilityP = vulnerabilityP;
-		this.codeSmellP = codeSmellP;
 		this.totalnumber = totalnumber;
-	}
-
-
-	public String getNameModule() {
-		return nameModule;
-	}
-	public void setNameModule(String nameModule) {
-		this.nameModule = nameModule;
+		this.listSonarType = listSonarType;
 	}
 	public String getNamePackage() {
 		return namePackage;
@@ -36,28 +23,50 @@ public class PackageIssue {
 	public void setNamePackage(String namePackage) {
 		this.namePackage = namePackage;
 	}
-	public int getBugP() {
-		return bugP;
-	}
-	public void setBugP(int bugP) {
-		this.bugP = bugP;
-	}
-	public int getVulnerabilityP() {
-		return vulnerabilityP;
-	}
-	public void setVulnerabilityP(int vulnerabilityP) {
-		this.vulnerabilityP = vulnerabilityP;
-	}
-	public int getCodeSmellP() {
-		return codeSmellP;
-	}
-	public void setCodeSmellP(int codeSmellP) {
-		this.codeSmellP = codeSmellP;
-	}
-	public int getTotalnumber() {
+	public float getTotalnumber() {
 		return totalnumber;
 	}
-	public void setTotalnumber(int totalnumber) {
+	public void setTotalnumber(float totalnumber) {
 		this.totalnumber = totalnumber;
 	}
+	public List<SonarTypeModule> getListSonarType() {
+		return listSonarType;
+	}
+	public void setListSonarType(List<SonarTypeModule> listSonarType) {
+		this.listSonarType = listSonarType;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((listSonarType == null) ? 0 : listSonarType.hashCode());
+		result = prime * result + ((namePackage == null) ? 0 : namePackage.hashCode());
+		result = prime * result + Float.floatToIntBits(totalnumber);
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PackageIssue other = (PackageIssue) obj;
+		if (listSonarType == null) {
+			if (other.listSonarType != null)
+				return false;
+		} else if (!listSonarType.equals(other.listSonarType))
+			return false;
+		if (namePackage == null) {
+			if (other.namePackage != null)
+				return false;
+		} else if (!namePackage.equals(other.namePackage))
+			return false;
+		if (Float.floatToIntBits(totalnumber) != Float.floatToIntBits(other.totalnumber))
+			return false;
+		return true;
+	}
+	
+	
 }

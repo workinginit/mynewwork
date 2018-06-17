@@ -24,6 +24,7 @@ public class JenkinsBuild {
 		this.result = result;
 		this.date = date;
 	}
+	
 	public int getNumber() {
 		return number;
 	}
@@ -54,4 +55,47 @@ public class JenkinsBuild {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result + (int) (duration ^ (duration >>> 32));
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + number;
+		result = prime * result + ((this.result == null) ? 0 : this.result.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		JenkinsBuild other = (JenkinsBuild) obj;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
+		if (duration != other.duration)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (number != other.number)
+			return false;
+		if (result == null) {
+			if (other.result != null)
+				return false;
+		} else if (!result.equals(other.result))
+			return false;
+		return true;
+	}
+	
+	
 }

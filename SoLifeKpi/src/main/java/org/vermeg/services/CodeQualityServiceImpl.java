@@ -9,14 +9,19 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.vermeg.entities.GloabalVioaltionSonar;
 import org.vermeg.entities.JenkinsBuild;
+import org.vermeg.entities.JiraPriority;
+import org.vermeg.entities.JiraProjectPriority;
 import org.vermeg.entities.Module;
 import org.vermeg.entities.PackageIssue;
-import org.vermeg.entities.Severity;
+import org.vermeg.entities.SonarSeveritye;
 import org.vermeg.entities.SeverityByModule;
 import org.vermeg.entities.SonarIssue;
 import org.vermeg.entities.SonarSeverity;
-import org.vermeg.entities.TypeSonar;
+import org.vermeg.entities.SonarSeverityModule;
+import org.vermeg.entities.SonarType;
+import org.vermeg.entities.SonarTypeModule;
 import org.vermeg.repository.JenkinsBuildRepository;
 import org.vermeg.repository.SonarRepository;
 import org.vermeg.repository.SvnModuleRepository;
@@ -43,41 +48,91 @@ public class CodeQualityServiceImpl implements CodeQualityService{
 		
 		List<String> listaa = svnService.findById("1000").get().getModule();
     	List<Module> listModule = new ArrayList<Module>();
-    	long totalIssueType = sonarService.count();
+    	long totalIssue = sonarService.count();
     	
-        Collection<String> Severitys = Arrays.asList(Severity.BLOCKER.name(), Severity.CRITICAL.name(), Severity.MAJOR.name());
+        Collection<String> Severitys = Arrays.asList(SonarSeveritye.BLOCKER.name(), SonarSeveritye.CRITICAL.name(), SonarSeveritye.MAJOR.name());
     	long totalIssueSeverity = sonarService.countBySeverityIn(Severitys);
     	
         for(String rt : listaa) {
-             	
-        	int v = sonarService.countByModuleAndType(rt, TypeSonar.VULNERABILITY.name());
-        	int b = sonarService.countByModuleAndType(rt, TypeSonar.BUG.name());
-        	int c = sonarService.countByModuleAndType(rt, TypeSonar.CODE_SMELL.name());
+        	long severitByModule = sonarService.countByModuleAndSeverityIn(rt, Severitys);
+        	int count = sonarService.countByModule(rt);
         	
-        	int totalByModule = v+b+c;
-        	float per = (float) totalByModule/totalIssueType  * 100;
-
-        	int blokcer = sonarService.countByModuleAndSeverity(rt, Severity.BLOCKER.name()); 
-        	int critical = sonarService.countByModuleAndSeverity(rt, Severity.CRITICAL.name());
-        	int major = sonarService.countByModuleAndSeverity(rt, Severity.MAJOR.name());
-
-        	int totalsev = blokcer+critical+major;
-        	float persev = (float) totalsev/totalIssueSeverity  * 100;
-        
-        	listModule.add(new Module(rt, b, v, c, per, blokcer, critical, major, persev));	
+        	Module module = new Module(rt, (float) count /totalIssue * 100 , (float) severitByModule / totalIssueSeverity *100,listSonarType(rt), listSonarSeverity(rt));
+            listModule.add(module);
         }
         
         return listModule;
 	}
+	
+	@Override
+	public List<SonarTypeModule> listSonarType(String moduleName) {
+    	int count = sonarService.countByModule(moduleName);
+    	List<SonarTypeModule> listOfSonarType = new ArrayList<SonarTypeModule>();
+    	int i = 0;
+
+        for (SonarType st : SonarType.values()) {
+        	if(i<3) {
+            	SonarTypeModule stm = new SonarTypeModule(st, (float) sonarService.countByModuleAndType(moduleName, st.name()) / count * 100);
+            	listOfSonarType.add(stm); 		
+            	i++;
+        	}
+
+        }
+		return listOfSonarType;
+	}
+	
+	@Override
+	public List<SonarSeverityModule> listSonarSeverity(String moduleName) {
+    	List<SonarSeverityModule> listOfSonarSeverity = new ArrayList<SonarSeverityModule>();
+        Collection<String> Severitys = Arrays.asList(SonarSeveritye.BLOCKER.name(), SonarSeveritye.CRITICAL.name(), SonarSeveritye.MAJOR.name());
+    	long totalIssueSeverity = sonarService.countByModuleAndSeverityIn(moduleName, Severitys);
+    	int i = 0;
+    	
+        for (SonarSeveritye ss : SonarSeveritye.values()) {
+        	if(i<3) {
+            	SonarSeverityModule ssm = new SonarSeverityModule(ss, (float) sonarService.countByModuleAndSeverity(moduleName, ss.name()) / totalIssueSeverity *100);
+            	listOfSonarSeverity.add(ssm);
+            	i++;	
+        	}
+
+        }
+		return listOfSonarSeverity;
+	}
+	
+	/**
+	 * cette méthode returne la liste des issue par package d'un module donnée
+	 */
+	@Override
+	public List<PackageIssue> issueModuleByPackage(String namemodule) {
+		
+        List<String> listaa = svnPackService.findByModule(namemodule).getListPackage();
+    	List<PackageIssue> listPack = new ArrayList<PackageIssue>();
+    	int totalIssueForModule = sonarService.countByModuleAndPackIn(namemodule, listaa);
+
+        for(String pbm : listaa) {
+        	List<SonarTypeModule> listOfSonarType = new ArrayList<SonarTypeModule>();
+	
+            for (SonarType st : SonarType.values()) {
+                SonarTypeModule stm = new SonarTypeModule(st, sonarService.countByModuleAndPackAndType(namemodule, pbm, st.name()) );
+                listOfSonarType.add(stm); 		            	
+            }
+        	
+        	PackageIssue packageIssue = new PackageIssue(pbm, (float) sonarService.countByModuleAndPack(namemodule, pbm)/totalIssueForModule *100 ,listOfSonarType);
+        	listPack.add(packageIssue);
+        }
+
+		return listPack;
+	}
+
 
 	/**
 	 * cette méthode retourne le pourcentage de severite d'un projet par type
 	 */
 	@Override
 	public SonarSeverity totalSeverity() {
-		int blocker = sonarService.findBySeverity(Severity.BLOCKER.name()).size();
-		int critical = sonarService.findBySeverity(Severity.CRITICAL.name()).size();
-		int major = sonarService.findBySeverity(Severity.MAJOR.name()).size();
+		int blocker = sonarService.findBySeverity(SonarSeveritye.BLOCKER.name()).size();
+		int critical = sonarService.findBySeverity(SonarSeveritye.CRITICAL.name()).size();
+		int major = sonarService.findBySeverity(SonarSeveritye.MAJOR.name()).size();
 
 		int total = blocker + critical + major;
 		
@@ -110,7 +165,7 @@ public class CodeQualityServiceImpl implements CodeQualityService{
         for(String rt : listaa) {
         	int i = 0;
         	for (SonarIssue  lm : listaa2) {
-        		if( lm.getComponent().startsWith(rt)) {
+        		if( lm.getModule().equals(rt)) {
         			i++;
         		}
         	}
@@ -126,28 +181,7 @@ public class CodeQualityServiceImpl implements CodeQualityService{
 		return listSeverityByModule;
 	}
 
-	/**
-	 * cette méthode returne la liste des issue par package d'un module donnée
-	 */
-	@Override
-	public List<PackageIssue> issueModuleByPackage(String namemodule) {
-		
-        List<String> listaa = svnPackService.findByModule(namemodule).getListPackage();
-    	List<PackageIssue> listPack = new ArrayList<PackageIssue>();
 
-        for(String pbm : listaa) {
-        	
-        	int bug = sonarService.findByModuleAndPackAndType(namemodule, pbm, "BUG").size();
-        	int vulnerability = sonarService.findByModuleAndPackAndType(namemodule, pbm, "VULNERABILITY").size();
-        	int codeSmell = sonarService.findByModuleAndPackAndType(namemodule, pbm, "CODE_SMELL").size();
-        	
-        	int total = bug + vulnerability + codeSmell;
-        	PackageIssue packageIssue = new PackageIssue(namemodule, pbm, bug, vulnerability, codeSmell, total);
-        	listPack.add(packageIssue);
-        }
-
-		return listPack;
-	}
 
 	/**
 	 * cette méthode retourne l'etat du dernier build 
@@ -158,4 +192,26 @@ public class CodeQualityServiceImpl implements CodeQualityService{
 		JenkinsBuild jB = ito.next();
 		return jB;
 	}
+
+	@Override
+	public List<GloabalVioaltionSonar> violationSonar() {
+
+    	List<GloabalVioaltionSonar> listViolation = new ArrayList<GloabalVioaltionSonar>();
+		String[] type = {"BUG", "VULNERABILITY", "CODE_SMELL"};
+    	
+		for(int i = 0; i<type.length; i++) {
+			int blocker = sonarService.countByTypeAndSeverity(type[i] ,SonarSeveritye.BLOCKER.name());
+			int critical = sonarService.countByTypeAndSeverity(type[i],SonarSeveritye.CRITICAL.name());
+			int major = sonarService.countByTypeAndSeverity(type[i],SonarSeveritye.MAJOR.name());
+			int minor = sonarService.countByTypeAndSeverity(type[i],SonarSeveritye.MINOR.name());
+			int info = sonarService.countByTypeAndSeverity(type[i],SonarSeveritye.INFO.name());
+			
+			GloabalVioaltionSonar gvs = new GloabalVioaltionSonar(type[i],blocker,critical,major,minor,info);
+			listViolation.add(gvs);
+		}
+
+
+		return listViolation;
+	}
+
 }

@@ -22,12 +22,24 @@ public interface SonarRepository extends ElasticsearchRepository<SonarIssue, Str
 	 
 	 List<SonarIssue> findByModuleAndSeverity(String module,String severity);
 
-	 long countByModule(String module);
+	 int countByModule(String module);
 	 
 	 long countBySeverityIn(Collection<String>Severitys);
 
 	 int countByModuleAndSeverity(String module, String severity);
 
 	 int countByModuleAndType(String module, String type);
+	 
+	 int countByTypeAndSeverity(String type, String severity);
+
+	 long countByModuleAndSeverityIn(String module,Collection<String>Severitys);
+
+	 int countByModuleAndPackAndType(String module,String pack, String type);
+
+	 int countByModuleAndPack(String module,String pack);
+	 
+	 int countByModuleAndPackIn(String module, Collection<String>packs);
+
+
 
 }
