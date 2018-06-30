@@ -11,8 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.vermeg.entities.GloabalVioaltionSonar;
 import org.vermeg.entities.JenkinsBuild;
-import org.vermeg.entities.JiraPriority;
-import org.vermeg.entities.JiraProjectPriority;
 import org.vermeg.entities.Module;
 import org.vermeg.entities.PackageIssue;
 import org.vermeg.entities.SonarSeveritye;
@@ -76,7 +74,6 @@ public class CodeQualityServiceImpl implements CodeQualityService{
             	listOfSonarType.add(stm); 		
             	i++;
         	}
-
         }
 		return listOfSonarType;
 	}
@@ -108,7 +105,7 @@ public class CodeQualityServiceImpl implements CodeQualityService{
         List<String> listaa = svnPackService.findByModule(namemodule).getListPackage();
     	List<PackageIssue> listPack = new ArrayList<PackageIssue>();
     	int totalIssueForModule = sonarService.countByModuleAndPackIn(namemodule, listaa);
-
+    	
         for(String pbm : listaa) {
         	List<SonarTypeModule> listOfSonarType = new ArrayList<SonarTypeModule>();
 	
@@ -130,9 +127,9 @@ public class CodeQualityServiceImpl implements CodeQualityService{
 	 */
 	@Override
 	public SonarSeverity totalSeverity() {
-		int blocker = sonarService.findBySeverity(SonarSeveritye.BLOCKER.name()).size();
-		int critical = sonarService.findBySeverity(SonarSeveritye.CRITICAL.name()).size();
-		int major = sonarService.findBySeverity(SonarSeveritye.MAJOR.name()).size();
+		int blocker = sonarService.countBySeverity(SonarSeveritye.BLOCKER.name());
+		int critical = sonarService.countBySeverity(SonarSeveritye.CRITICAL.name());
+		int major = sonarService.countBySeverity(SonarSeveritye.MAJOR.name());
 
 		int total = blocker + critical + major;
 		
@@ -193,6 +190,7 @@ public class CodeQualityServiceImpl implements CodeQualityService{
 		return jB;
 	}
 
+	
 	@Override
 	public List<GloabalVioaltionSonar> violationSonar() {
 

@@ -95,6 +95,12 @@ public class GloabalVioaltionSonar {
 			return false;
 		return true;
 	}
+	@Override
+	public String toString() {
+		return "GloabalVioaltionSonar [type=" + type + ", blocker=" + blocker + ", critical=" + critical + ", major="
+				+ major + ", minor=" + minor + ", info=" + info + "]";
+	}
+	
 	
 	
 }

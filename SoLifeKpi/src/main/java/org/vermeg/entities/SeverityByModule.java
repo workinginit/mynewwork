@@ -52,4 +52,10 @@ public class SeverityByModule {
 		return true;
 	}
 	
+	@Override
+	public String toString() {
+		return "SeverityByModule [moduleName=" + moduleName + ", value=" + value + "]";
+	}
+	
+	
 }

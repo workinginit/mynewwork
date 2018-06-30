@@ -14,26 +14,22 @@ import org.vermeg.entities.SonarTypeModule;
 
 public interface CodeQualityService {
 	
-	//tested
+
     List<Module> issueByModule(); 
     
     List<SonarSeverityModule> listSonarSeverity(String moduleName);
     
-    List<SonarTypeModule> listSonarType(String moduleName);
-    
-    //tested
-    List<PackageIssue> issueModuleByPackage(String namemodule); 
-    
-    //tested
-    SonarSeverity totalSeverity();
-    
-    //tested
-    List<SeverityByModule> severityByModule(String severity); 
+    List<SonarTypeModule> listSonarType(String moduleName);    
 
-    //tested
+    List<PackageIssue> issueModuleByPackage(String namemodule); 
+      
     JenkinsBuild JenkinsLastBuild();
     
-    //tested
+  
+    SonarSeverity totalSeverity();
+    
+    List<SeverityByModule> severityByModule(String severity); 
+
     List<GloabalVioaltionSonar> violationSonar(); 
 
 

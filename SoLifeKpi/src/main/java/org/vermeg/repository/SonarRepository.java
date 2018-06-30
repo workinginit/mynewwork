@@ -40,6 +40,7 @@ public interface SonarRepository extends ElasticsearchRepository<SonarIssue, Str
 	 
 	 int countByModuleAndPackIn(String module, Collection<String>packs);
 
+	 int countBySeverity(String severity);
 
 
 }

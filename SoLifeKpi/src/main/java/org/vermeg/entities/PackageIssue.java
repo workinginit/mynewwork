@@ -67,6 +67,11 @@ public class PackageIssue {
 			return false;
 		return true;
 	}
+	@Override
+	public String toString() {
+		return "PackageIssue [namePackage=" + namePackage + ", totalnumber=" + totalnumber + ", listSonarType="
+				+ listSonarType + "]";
+	}
 	
 	
 }
