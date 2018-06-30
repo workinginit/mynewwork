@@ -40,6 +40,7 @@ public class SonarIssueServiceImpl implements SonarIssueService{
         
     	ArrayList<SonarIssue> listofissue = new ArrayList<SonarIssue>();
 
+    	//Attention on doit remplacer
         for (Issues.Issue issue : issuesList) {
         	if(issue.getComponent().contains("/src/main/java/")) {
         		String[] module = issue.getComponent().substring(issue.getComponent().indexOf(":")+1).split("/");
