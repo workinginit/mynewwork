@@ -49,7 +49,7 @@ public class CodeQualityServiceTest {
 
     }
     
-	
+    @Ignore
 	@Test
 	public void testCodeQualitySettingssave() {
 
@@ -62,7 +62,7 @@ public class CodeQualityServiceTest {
 	
 	}
 	
-	
+	@Ignore
 	@Test
 	public void testFindcodeQsettingsById() {
 
@@ -77,7 +77,7 @@ public class CodeQualityServiceTest {
 	
 	}
 	
-	
+	@Ignore
 	@Test
 	public void testtotalSeverity() {
 
@@ -92,7 +92,7 @@ public class CodeQualityServiceTest {
 
 	}
 	
-	
+	@Ignore
 	@Test
 	public void testJenkinsLastBuild() {
 
@@ -107,6 +107,7 @@ public class CodeQualityServiceTest {
 		
 	}
 	
+	@Ignore
 	@Test
 	public void testissueByModule() {
 
@@ -119,7 +120,7 @@ public class CodeQualityServiceTest {
 	
 	}
 	
-	
+	@Ignore
 	@Test
 	public void testSeverityByModule() {
 
@@ -134,6 +135,7 @@ public class CodeQualityServiceTest {
   
 	}
 	
+	@Ignore
 	@Test
 	public void testissueModuleByPackage() {
 
@@ -155,6 +157,7 @@ public class CodeQualityServiceTest {
   
 	}
 	
+	@Ignore
 	@Test
 	public void testViolationSonar() {
 
